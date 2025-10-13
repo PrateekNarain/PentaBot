@@ -1,7 +1,8 @@
 // src/services/chatApi.js
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000';
+// Production backend assumed URL (changeable via Vite env VITE_API_BASE)
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://penta-bot-backend.vercel.app';
 
 export async function sendChatMessage(message, history = []) {
   const token = localStorage.getItem('token');

@@ -15,7 +15,9 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
 
-app.use(cors());
+// Allow only the frontend deployed origin (configurable via FRONTEND_ORIGIN env)
+const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || 'https://penta-bot.vercel.app';
+app.use(cors({ origin: FRONTEND_ORIGIN }));
 app.use(express.json());
 // Mount authentication routes (signup, signin, verify, logout, oauth)
 app.use('/api/auth', require('./routes/authRoutes'));
