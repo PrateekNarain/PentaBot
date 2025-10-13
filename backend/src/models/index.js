@@ -17,7 +17,4 @@ Chat.belongsTo(User, { foreignKey: 'userId' });
 Chat.hasMany(Message, { foreignKey: 'chatId', as: 'messages' });
 Message.belongsTo(Chat, { foreignKey: 'chatId' });
 
-// Sync DB
-sequelize.sync({ alter: true }).then(() => console.log('✅ DB synced with new models'));
-
 module.exports = { User, Organization, Chat, Message };

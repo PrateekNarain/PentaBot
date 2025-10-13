@@ -14,6 +14,10 @@ const Organization = sequelize.define('Organization', {
   ownerId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    references: {
+      model: 'Users',
+      key: 'id'
+    },
   },
 });
 
