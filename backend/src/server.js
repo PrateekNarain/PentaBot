@@ -24,7 +24,8 @@ const corsOptions = {
     // allow requests with no origin (mobile apps, curl, server-to-server)
     if (!origin) return callback(null, true);
     if (FRONTEND_ORIGINS.includes(origin)) return callback(null, true);
-    return callback(new Error('CORS not allowed for origin: ' + origin));
+    // explicitly disallow origin (no error) so preflight response still returned
+    return callback(null, false);
   },
   methods: ['GET','HEAD','PUT','PATCH','POST','DELETE','OPTIONS'],
   allowedHeaders: ['Content-Type','Authorization'],
