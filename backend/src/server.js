@@ -34,6 +34,21 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+// Explicitly set CORS headers for allowed origins and handle OPTIONS preflight
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && FRONTEND_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+  }
+  if (req.method === 'OPTIONS') {
+    // short-circuit preflight
+    return res.sendStatus(204);
+  }
+  next();
+});
 // Mount authentication routes (signup, signin, verify, logout, oauth)
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/chat', require('./routes/chatRoutes'));
