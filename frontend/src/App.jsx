@@ -17,7 +17,8 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      axios.get('http://localhost:5000/api/auth/verify', {
+      const API_BASE = import.meta.env.VITE_API_BASE || window.__API_BASE__ || 'http://localhost:5000';
+      axios.get(`${API_BASE}/api/auth/verify`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {

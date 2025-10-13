@@ -1,8 +1,9 @@
 // src/services/chatApi.js
 import axios from 'axios';
+import { getApiBase } from '../utils/backendProbe';
 
-// Production backend assumed URL (changeable via Vite env VITE_API_BASE)
-const API_BASE = import.meta.env.VITE_API_BASE || 'https://penta-bot-backend.vercel.app';
+// Resolve API base at runtime via getApiBase()
+const API_BASE = () => getApiBase();
 
 export async function sendChatMessage(message, history = []) {
   const token = localStorage.getItem('token');
@@ -10,7 +11,7 @@ export async function sendChatMessage(message, history = []) {
 
   try {
     const res = await axios.post(
-      `${API_BASE}/api/chat/message`,
+      `${API_BASE()}/api/chat/message`,
       { message, history },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -30,7 +31,7 @@ export async function sendChatMessage(message, history = []) {
 export async function getCredits() {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Not authenticated');
-  const res = await axios.get(`${API_BASE}/api/user/me`, {
+  const res = await axios.get(`${API_BASE()}/api/user/me`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return res.data?.credits;

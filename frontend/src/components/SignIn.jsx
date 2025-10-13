@@ -16,8 +16,8 @@ function SignIn({ setAuth, setUser }) {
     setLoading(true);
     
     try {
-      const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000';
-      const res = await axios.post(`${API_BASE}/api/auth/signin`, { username, password });
+  const API_BASE = import.meta.env.VITE_API_BASE || window.__API_BASE__ || 'http://localhost:5000';
+  const res = await axios.post(`${API_BASE}/api/auth/signin`, { username, password });
       
       // Store token from your backend
       localStorage.setItem('token', res.data.token);
@@ -57,6 +57,7 @@ function SignIn({ setAuth, setUser }) {
               className="w-full p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:outline-none transition-colors"
               required
               disabled={loading}
+              autoComplete="username"
             />
           </div>
           
@@ -70,6 +71,7 @@ function SignIn({ setAuth, setUser }) {
               className="w-full p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:outline-none transition-colors"
               required
               disabled={loading}
+              autoComplete="current-password"
             />
           </div>
           

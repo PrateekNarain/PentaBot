@@ -11,7 +11,7 @@ function SignUp({ setAuth, setUser }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000';
+  const API_BASE = import.meta.env.VITE_API_BASE || window.__API_BASE__ || 'http://localhost:5000';
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -75,6 +75,7 @@ function SignUp({ setAuth, setUser }) {
               className="w-full p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:outline-none transition-colors"
               required
               disabled={loading}
+              autoComplete="username"
             />
           </div>
           
@@ -88,6 +89,7 @@ function SignUp({ setAuth, setUser }) {
               className="w-full p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:outline-none transition-colors"
               required
               disabled={loading}
+              autoComplete="email"
             />
           </div>
           
@@ -102,6 +104,7 @@ function SignUp({ setAuth, setUser }) {
               required
               minLength="6"
               disabled={loading}
+              autoComplete="new-password"
             />
           </div>
           
