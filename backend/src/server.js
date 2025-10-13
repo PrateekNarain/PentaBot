@@ -15,9 +15,25 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
 
-// Allow only the frontend deployed origin (configurable via FRONTEND_ORIGIN env)
-const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || 'https://penta-bot.vercel.app';
-app.use(cors({ origin: FRONTEND_ORIGIN }));
+// Allow multiple frontend origins (comma-separated) via FRONTEND_ORIGINS env var.
+// Defaults include local dev host used by Vite and the deployed frontend on Vercel.
+const FRONTEND_ORIGINS = (process.env.FRONTEND_ORIGINS || 'http://localhost:5173,https://penta-bot.vercel.app').split(',').map(s => s.trim());
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // allow requests with no origin (mobile apps, curl, server-to-server)
+    if (!origin) return callback(null, true);
+    if (FRONTEND_ORIGINS.includes(origin)) return callback(null, true);
+    return callback(new Error('CORS not allowed for origin: ' + origin));
+  },
+  methods: ['GET','HEAD','PUT','PATCH','POST','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization'],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+// handle preflight requests for all routes
+app.options('*', cors(corsOptions));
 app.use(express.json());
 // Mount authentication routes (signup, signin, verify, logout, oauth)
 app.use('/api/auth', require('./routes/authRoutes'));

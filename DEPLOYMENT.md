@@ -19,9 +19,14 @@ Backend Vercel deployment (penta-bot-backend.vercel.app)
 3. Environment Variables (in backend project settings or platform):
    - `DATABASE_URL` or DB connection vars (DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT)
    - `JWT_SECRET` = <your-secret>
-   - `FRONTEND_ORIGIN` = `https://penta-bot.vercel.app`
+   - `FRONTEND_ORIGINS` = `http://localhost:5173,https://penta-bot.vercel.app,https://pentabot-1.onrender.com`
 
-4. CORS: server is configured to accept requests only from `FRONTEND_ORIGIN`. Ensure this is set correctly in production.
+4. CORS: server is configured to accept requests from any origin listed in `FRONTEND_ORIGINS`. The default includes:
+   - `http://localhost:5173` (Vite dev server)
+   - `https://penta-bot.vercel.app` (frontend on Vercel)
+   - `https://pentabot-1.onrender.com` (example deployed backend URL)
+
+   Update `FRONTEND_ORIGINS` on the backend host to allow additional origins if necessary.
 
 Notes & Checklist
 - After both deployments, the frontend will call the backend using `VITE_API_BASE`.
