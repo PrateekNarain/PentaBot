@@ -40,7 +40,23 @@ DB_USER=<user>
 DB_PASS=<password>
 DB_NAME=<db>
 DB_PORT=5432
-FRONTEND_ORIGIN=https://penta-bot.vercel.app
+FRONTEND_ORIGINS=http://localhost:5173,https://penta-bot.vercel.app,https://pentabot-1.onrender.com
+
+Using your .env (DO NOT commit secrets):
+The repository contains a `backend/.env.template` which lists the variables required by the backend. Fill values in the hosting provider's environment settings (Vercel / Render / Railway) rather than committing them.
+
+Render deployment (example)
+1. In Render create a new Web Service and connect to this repo. Set the Root Directory to `backend`.
+2. Use the provided `render.yaml` or add the same environment variables in the Render dashboard.
+3. Set `DATABASE_URL` to your database connection string (from your .env). Example:
+   DATABASE_URL=postgresql://postgres:<password>@aws-1-us-east-2.pooler.supabase.com:6543/postgres
+4. Set `JWT_SECRET` to your JWT secret value.
+5. Set `FRONTEND_ORIGINS` as above.
+
+Vercel frontend
+1. In Vercel project settings for the frontend, set:
+   - `VITE_API_BASE` = `https://pentabot-1.onrender.com` (or the backend URL from Render)
+2. Deploy the `frontend` directory as the Vercel project root (or use `vercel.json` included in the frontend folder).
 
 Example env for frontend on Vercel:
 VITE_API_BASE=https://penta-bot-backend.vercel.app

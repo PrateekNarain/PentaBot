@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: penta-bot-backend
+    env: node
+    plan: free
+    buildCommand: "npm install && npm run build"
+    startCommand: "node src/server.js"
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: "5000"
+      - key: DATABASE_URL
+        fromDatabase: false
+      - key: JWT_SECRET
+        fromDatabase: false
+      - key: FRONTEND_ORIGINS
+        value: "http://localhost:5173,https://penta-bot.vercel.app,https://pentabot-1.onrender.com"
