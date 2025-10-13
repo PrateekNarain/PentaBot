@@ -17,6 +17,8 @@ const io = new Server(server, { cors: { origin: '*' } });
 
 app.use(cors());
 app.use(express.json());
+// Mount authentication routes (signup, signin, verify, logout, oauth)
+app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/chat', require('./routes/chatRoutes'));
 
 // Request logging middleware
