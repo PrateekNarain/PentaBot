@@ -1,0 +1,85 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body{
+  background: rgb(3,0,31);
+  color: white;
+  font-family: 'Poppins', sans-serif;
+
+}
+
+.App{
+  min-height: 100vh;
+  display: flex;
+}
+
+.sideBar {
+  flex: 2;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgb(100, 100, 100);
+}
+
+.main{
+  flex: 9;
+}
+
+.logo{
+  margin-right: 1rem;
+}
+
+.brand{
+  font-size: 2rem;
+}
+
+.upperSideTop{
+  display: flex;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.addBtn{
+  height: 2.5rem;
+  padding-right: 1.5rem;
+
+}
+.midBtn{
+  background: transparent;
+  border: 1px solid rgb(100, 100, 100);
+  border-radius: 0.5rem;
+  color: white;
+  padding: 1.2rem;
+  font-size: 1.5rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 3rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.lowerSide {
+  margin-top: auto;
+}
+
+.query, .listItems {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem; 
+  padding: 1rem 0; 
+  font-size: 1.3rem;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: rgba(222,222,222,1);
+  font-family: 'Poppins', sans-serif;
+}
