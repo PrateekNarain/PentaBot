@@ -32,8 +32,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-// handle preflight requests for all routes
-app.options('*', cors(corsOptions));
 app.use(express.json());
 // Mount authentication routes (signup, signin, verify, logout, oauth)
 app.use('/api/auth', require('./routes/authRoutes'));
