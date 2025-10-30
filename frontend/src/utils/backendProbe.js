@@ -1,7 +1,8 @@
 // runtime probe to select a reachable backend (deployed first, then localhost)
 import axios from 'axios';
 
-const DEFAULT_DEPLOYED = import.meta.env.VITE_API_BASE || 'https://penta-bot-backend.vercel.app';
+// Default to your Render backend URL when VITE_API_BASE is not set in the build environment.
+const DEFAULT_DEPLOYED = import.meta.env.VITE_API_BASE || 'https://pentabot-zxzy.onrender.com';
 const LOCAL_FALLBACK = 'http://localhost:5000';
 
 let resolvedBase = null;

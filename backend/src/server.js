@@ -32,7 +32,8 @@ app.use((req, res, next) => {
 
 // Allow multiple frontend origins (comma-separated) via FRONTEND_ORIGINS env var.
 // Defaults include local dev host used by Vite and the deployed frontend on Vercel.
-const FRONTEND_ORIGINS = (process.env.FRONTEND_ORIGINS || 'http://localhost:5173,https://penta-bot.vercel.app').split(',').map(s => s.trim());
+// Include the deployed Vercel frontend origin (pentabot.vercel.app) by default so CORS works
+const FRONTEND_ORIGINS = (process.env.FRONTEND_ORIGINS || 'http://localhost:5173,https://pentabot.vercel.app').split(',').map(s => s.trim());
 
 const corsOptions = {
   origin: (origin, callback) => {
