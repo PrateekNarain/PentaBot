@@ -3,7 +3,9 @@ services:
     name: penta-bot-backend
     env: node
     plan: free
-    buildCommand: "npm install && npm run build"
+  # For this Node web service we only need to install dependencies.
+  # 'npm run build' isn't defined for the backend; use plain 'npm install'.
+  buildCommand: "npm install"
     startCommand: "node src/server.js"
     autoDeploy: true
     envVars:
