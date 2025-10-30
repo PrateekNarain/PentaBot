@@ -15,6 +15,21 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
 
+// --- Early CORS headers and debug logging ---
+// Ensure CORS headers are present on every response (helps with OPTIONS/preflight and error paths)
+app.use((req, res, next) => {
+  const origin = req.headers.origin || '';
+  // Log incoming origin for debugging deployed CORS issues
+  console.log('[CORS DEBUG] incoming origin:', origin);
+  // Reflect origin if present, otherwise allow all for non-browser clients
+  res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
+  next();
+});
+
 // Allow multiple frontend origins (comma-separated) via FRONTEND_ORIGINS env var.
 // Defaults include local dev host used by Vite and the deployed frontend on Vercel.
 const FRONTEND_ORIGINS = (process.env.FRONTEND_ORIGINS || 'http://localhost:5173,https://penta-bot.vercel.app').split(',').map(s => s.trim());
@@ -130,4 +145,18 @@ io.on('connection', (socket) => {
 
 // Start server
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log('[CORS DEBUG] FRONTEND_ORIGINS =', (process.env.FRONTEND_ORIGINS || 'http://localhost:5173,https://penta-bot.vercel.app'));
+});
+
+// Global error handlers to avoid process exit on unhandled errors
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  // don't exit; log so the request can return a 500 instead
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+  // In production you might want to restart the process; for development keep it alive for debugging
+});
