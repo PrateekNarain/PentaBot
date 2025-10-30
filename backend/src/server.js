@@ -161,3 +161,22 @@ process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
   // In production you might want to restart the process; for development keep it alive for debugging
 });
+
+// Temporary debug endpoint to test DB connectivity from the deployed host.
+// Enabled only when ALLOW_DEBUG=true in env (don't expose in production).
+app.get('/debug/db', async (req, res) => {
+  if (process.env.ALLOW_DEBUG !== 'true') {
+    return res.status(403).json({ ok: false, message: 'DB debug disabled' });
+  }
+
+  try {
+    // basic authenticate
+    await sequelize.authenticate();
+    // run a simple query
+    const [rows] = await sequelize.query('SELECT now() as now');
+    return res.json({ ok: true, message: 'DB connected', now: rows[0] });
+  } catch (err) {
+    // return error details to help debug (safe because this endpoint is gated)
+    return res.status(500).json({ ok: false, message: err.message, error: err });
+  }
+});
