@@ -78,21 +78,43 @@ app.use((req, res, next) => {
 // ==================== Database Configuration ====================
 // `sequelize` is loaded above from ./config/db which already creates the connection.
 // Test database connection and (optionally) sync models in development.
-const testConnection = async () => {
-  try {
-    await sequelize.authenticate();
-    console.log('✅ Database connected successfully');
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
-    if (process.env.NODE_ENV !== 'production') {
-      // Sync models in development only (be careful in production)
-      await sequelize.sync({ alter: true });
-      console.log('✅ Database models synchronized');
-    }
-  } catch (error) {
-    console.error('❌ Database connection error:', error.message);
-    console.error('Full error:', error);
-    if (process.env.NODE_ENV !== 'production') {
-      process.exit(1);
+const testConnection = async () => {
+  const maxAttempts = 3;
+  let attempt = 0;
+  while (attempt < maxAttempts) {
+    try {
+      await sequelize.authenticate();
+      console.log('✅ Database connected successfully');
+
+      // Only sync models when not in production and not explicitly skipped
+      if (process.env.NODE_ENV !== 'production' && process.env.SKIP_DB_SYNC !== 'true') {
+        try {
+          await sequelize.sync({ alter: true });
+          console.log('✅ Database models synchronized');
+        } catch (syncErr) {
+          console.warn('⚠️ Model sync failed:', syncErr.message);
+        }
+      } else {
+        console.log('ℹ️ Skipping automatic DB sync (production or SKIP_DB_SYNC=true)');
+      }
+
+      return;
+    } catch (error) {
+      attempt += 1;
+      console.error(`❌ Database connection attempt ${attempt} failed:`, error.message);
+      if (attempt >= maxAttempts) {
+        console.error('Full error:', error);
+        // In development exit so the developer notices; in production keep running so service can respond with 503
+        if (process.env.NODE_ENV !== 'production') {
+          process.exit(1);
+        }
+        return;
+      }
+      const backoff = 1000 * Math.pow(2, attempt - 1);
+      console.log(`Retrying DB connection in ${backoff}ms...`);
+      await wait(backoff);
     }
   }
 };
