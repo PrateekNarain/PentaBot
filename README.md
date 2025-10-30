@@ -16,8 +16,8 @@
 ### Supabase Messages Table
 ![Backend Messages Table](https://github.com/PrateekNarain/PentaBot/blob/main/Images/Messages.png) 
 ## Live Deployment Links
-- **Frontend (Vercel)**: [https://your-vercel-frontend-url.vercel.app](https://penta-bot.vercel.app/) 
-- **Backend (Render)**: [https://your-render-backend-url.onrender.com](https://pentabot-1.onrender.com)
+- **Frontend (Vercel)**: [https://your-vercel-frontend-url.vercel.app](https://pentabot.vercel.app/) 
+- **Backend (Render)**: [https://your-render-backend-url.onrender.com](https://pentabot-zxzy.onrender.com)
 
 ## Project Description
 PentaBot is a full-stack LLM-based chat platform built from scratch as per the assignment instructions. It allows authenticated users to chat with an integrated LLM (Google Gemini API), consume credits per usage, belong to organizations, and receive notifications. The platform uses Supabase (PostgreSQL) for storing user credentials and authenticating with username/password (Google OAuth is planned but not yet implemented). Onboarding creates a default organization and assigns the user as Admin. The UI closely matches the provided reference design, with a ChatGPT-style layout including sidebar for chat history, main chat area, and top bar for credits and notifications.
