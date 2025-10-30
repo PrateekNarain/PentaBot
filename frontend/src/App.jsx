@@ -6,6 +6,7 @@ import SignIn from './components/SignIn';
 import ChatArea from './components/ChatArea';
 import Sidebar from './components/Sidebar';
 import axios from 'axios';
+import { getApiBase } from './utils/backendProbe';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -17,7 +18,7 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      const API_BASE = import.meta.env.VITE_API_BASE || window.__API_BASE__ || 'http://localhost:5000';
+      const API_BASE = import.meta.env.VITE_API_BASE || window.__API_BASE__ || getApiBase();
       axios.get(`${API_BASE}/api/auth/verify`, {
         headers: { Authorization: `Bearer ${token}` },
       })

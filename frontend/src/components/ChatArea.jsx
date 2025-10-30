@@ -1,6 +1,7 @@
 // src/components/ChatArea.jsx
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { getApiBase } from '../utils/backendProbe';
 import ErrorBoundary from './ErrorBoundary';
 import TopBar from './TopBar';
 import MessageList from './MessageList';
@@ -37,7 +38,7 @@ function ChatArea({ user, setAuth, setUser, currentChatId, setCurrentChatId, ref
   const fetchUserCredits = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/chat/credits', {
+      const res = await axios.get(`${getApiBase()}/api/chat/credits`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCredits(res.data.credits);
@@ -50,7 +51,7 @@ function ChatArea({ user, setAuth, setUser, currentChatId, setCurrentChatId, ref
   const loadChatMessages = async (chatId) => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`http://localhost:5000/api/chat/chats/${chatId}`, {
+      const res = await axios.get(`${getApiBase()}/api/chat/chats/${chatId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
@@ -113,7 +114,7 @@ function ChatArea({ user, setAuth, setUser, currentChatId, setCurrentChatId, ref
     try {
       const token = localStorage.getItem('token');
       const res = await axios.post(
-        'http://localhost:5000/api/chat/message',
+        `${getApiBase()}/api/chat/message`,
         { 
           message: messageText,
           chatId: currentChatId,

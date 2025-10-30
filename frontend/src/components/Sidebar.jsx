@@ -1,6 +1,7 @@
 // src/components/Sidebar.jsx
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { getApiBase } from '../utils/backendProbe';
 import gptLogo from '../assets/chatgpt.svg';
 import addBtn from '../assets/add-30.png';
 import msgIcon from '../assets/message.svg';
@@ -20,7 +21,7 @@ function Sidebar({ currentChatId, setCurrentChatId, refreshTrigger }) {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/chat/chats', {
+      const res = await axios.get(`${getApiBase()}/api/chat/chats`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setChats(res.data.chats);
@@ -45,7 +46,7 @@ function Sidebar({ currentChatId, setCurrentChatId, refreshTrigger }) {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/chat/chats/${chatId}`, {
+      await axios.delete(`${getApiBase()}/api/chat/chats/${chatId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
