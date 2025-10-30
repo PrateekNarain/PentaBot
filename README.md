@@ -97,7 +97,7 @@ npm install
 ## Environment Variables
 ### Frontend `.env` (in `frontend/` folder)
 ```bash
-VITE_BACKEND_URL=http://localhost:5000  # Backend API URL (change to Render URL in production)
+VITE_API_BASE=https://pentabot.onrender.com  # Backend API URL (change to Render URL in production)
 VITE_GEMINI_API_KEY=your_gemini_api_key  # Gemini API key (if direct calls; otherwise backend handles)
 ```
 ### Backend `.env` (in `backend/` folder)
@@ -108,6 +108,11 @@ JWT_SECRET=your_jwt_secret  # Secret for JWT tokens
 GOOGLE_CLIENT_ID=your_google_client_id  # Google OAuth Client ID (for future integration)
 GOOGLE_CLIENT_SECRET=your_google_client_secret  # Google OAuth Client Secret (for future integration)
 GEMINI_API_KEY=your_gemini_api_key  # Google Gemini API key
+ALLOW_DEBUG = true
+DB_SSL=true
+FRONTEND_ORIGINS=http://localhost:5173,https://chatbot.vercel.app
+NODE_ENV=production
+SKIP_DB_SYNC= true
 ```
 ## Running Locally
 1. Start the backend:
